@@ -18,15 +18,13 @@ const userSchema = new Schema(
         },
 
         thoughts: [ 
-            // array of _id values referenceing the Thought model
+            // array of _id values referencing the Thought model
         ],
 
         friends: [
             //array of _id values referencing the User model (self-reference)
 
         ]
-
-
         
     }
 );
