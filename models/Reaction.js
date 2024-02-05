@@ -23,4 +23,6 @@ const reactionSchema = new Schema(
             default: Date.now,
         },
     }
-)
+);
+
+module.exports = reactionSchema;
