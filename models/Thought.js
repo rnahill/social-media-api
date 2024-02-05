@@ -25,4 +25,6 @@ const thoughtSchema = new Schema(
     }
 );
 
-module.exports = thoughtSchema;
+const Thought = mongoose.model('Thought', thoughtSchema);
+
+module.exports = Thought;
