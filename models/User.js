@@ -6,14 +6,14 @@ const userSchema = new Schema(
         username: {
             type: String,
             required: true,
-            // unique
-            //trimmed
+            unique: true,
+            trim: true,
         },
 
         email: {
             type: String,
             required: true,
-            // unique
+            unique: true,
             //must match a valid email address (Mongoose matching validation)
         },
 
