@@ -14,7 +14,6 @@ const getUsers = async (req, res) => {
 }
 
 // Get one user
-
 const getOneUser = async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.userId}).populate('users');
@@ -34,9 +33,36 @@ const createUser = async (req, res) => {
     }
 }
 
-router.route('/')
+// Update a user
+const updateUser = async (req, res) => {
+    try{
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.userId},
+            {$set: req.body},
+            { runValidators: true, new: true}
+        );
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
+// Delete a user
+const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findOneAndDelete({ _id: req.params.userId });
+        await User.deleteMany({ _id: { $in: user.thoughts}});
+        res.json({ message: "User and thoughts deleted!" });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
+// Routes
+router.route('/users')
     .get(getUsers)
     .post(createUser)
 
 router.route('/:userId')
     .get(getOneUser)
+    .put(updateUser)
+    .delete(deleteUser)
