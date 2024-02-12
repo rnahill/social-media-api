@@ -10,13 +10,13 @@ const getUsers = async (req, res) => {
 
     } catch (err) {
         res.status(500).json(err);
-    }
-}
+    };
+};
 
 // Get one user
 const getOneUser = async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.userId}).populate('users');
+        const user = await User.findOne({ _id: req.params.userId }).populate('users');
         res.json(user);
     } catch (err) {
         res.status(500).json(err);
@@ -37,9 +37,9 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try{
         const user = await User.findOneAndUpdate(
-            { _id: req.params.userId},
-            {$set: req.body},
-            { runValidators: true, new: true}
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
         );
     } catch (err) {
         res.status(500).json(err);
