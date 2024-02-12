@@ -23,6 +23,8 @@ const getOneThought = async (req, res) => {
     };
 };
 
+// Create a thought
+// don't forget to push the created thought's _id to the associated user's thoughts array field
 const createThought = async (req, res) => {
     try {
         const thought = await Thought.create(req.body);
@@ -32,6 +34,8 @@ const createThought = async (req, res) => {
     };
 };
 
+
+// Update a thought
 const updateThought = async (req, res) => {
     try {
         const thought = await Thought.findOneAndUpdate (
@@ -44,6 +48,7 @@ const updateThought = async (req, res) => {
     };
 };
 
+// Delete a thought
 const deleteThought = async (req, res) => {
     try {
         const thought = await Thought.findOneAndDelete({ id_: res.params.thoughtId });
@@ -53,6 +58,7 @@ const deleteThought = async (req, res) => {
     }
 }
 
+// Routes
 router.route('/thoughts')
     .get(getAllThoughts)
     .post(createThought)
