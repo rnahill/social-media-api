@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Thought } = require('../../models/Thought');
+const { Thought, User } = require('../../models');
 
 
 // Get all thoughts
@@ -26,11 +26,18 @@ const getOneThought = async (req, res) => {
 // don't forget to push the created thought's _id to the associated user's thoughts array field
 const createThought = async (req, res) => {
     try {
-        const thought = await Thought.create(req.body);
-        res.json(thought);
+        const thought = await Thought.create(req.body)
+        .then((dbThoughtData) => {
+            return User.findOneAndUpdate(
+                { _id: req.body.userId },
+                { $push: { thoughts: dbThoughtData._id } },
+                { new: true }
+            );
+        });
+        res.json("Thought created!");
     } catch (err) {
         res.status(500).json(err);
-    };
+    }
 };
 
 
