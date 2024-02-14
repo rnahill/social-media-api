@@ -27,7 +27,7 @@ const getOneUser = async (req, res) => {
 const createUser = async (req, res) => {
     try {
         const user = await User.create(req.body);
-        res.json(user)
+        res.json({ message: "User created! " + user });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -41,6 +41,7 @@ const updateUser = async (req, res) => {
             { $set: req.body },
             { runValidators: true, new: true }
         );
+        res.json({ message: "User updated! " + user });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -57,6 +58,7 @@ const deleteUser = async (req, res) => {
     }
 }
 
+// Add a friend
 const addFriend = async (req, res) => {
     try {
         await User.findOneAndUpdate(
@@ -64,17 +66,20 @@ const addFriend = async (req, res) => {
             { $push: { friends: req.params.friendId } },
             { new: true }
         )
+        res.json({ message: "Friend added!" });
     } catch (err) {
         res.status(500).json(err);
     }
 }
 
+// Remove a friend
 const removeFriend = async (req, res) => {
     try {
         await User.findOneAndUpdate(
             { _id: req.params.userId},
             { $pull: { friends: req.params.friendId } }
         )
+        res.json({ message: "Friend removed!" });
     } catch (err) {
         res.status(500).json(err);
     }
