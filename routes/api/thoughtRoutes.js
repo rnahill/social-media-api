@@ -16,7 +16,7 @@ const getAllThoughts = async (req, res) => {
 const getOneThought = async (req, res) => {
     try{
         const thought = await Thought.findOne( { _id: req.params.thoughtId }).populate('thoughts');
-        res.json (thoughts);
+        res.json (thought);
     } catch (err) {
         res.status(500).json(err);
     };
@@ -34,7 +34,7 @@ const createThought = async (req, res) => {
                 { new: true }
             );
         });
-        res.json("Thought created!");
+        res.json({ message: "Thought created! " + thought });
     } catch (err) {
         res.status(500).json(err);
     }
@@ -49,6 +49,7 @@ const updateThought = async (req, res) => {
             { $set: req.body },
             { runValidators: true, new: true }
         )
+        res.json({ message: "Thought updated! " + thought });
     } catch (err) {
         res.status(500).json(err);
     };
@@ -58,10 +59,37 @@ const updateThought = async (req, res) => {
 const deleteThought = async (req, res) => {
     try {
         const thought = await Thought.findOneAndDelete({ id_: res.params.thoughtId });
-        res.json({ message: "Thought deleted!" });
+        res.json({ message: "Thought deleted! " + thought });
     } catch (err) {
         res.status(500).json(err);
-    }
+    };
+};
+
+// Add a reaction
+const createReaction = async (req, res) => {
+    try {
+        const reaction = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtid },
+            { $push: {reactions: req.body } },
+            { runValidators: true, new: true }
+            )
+            res.json({ message: "Reaction created! " + reaction });
+    } catch (err) {
+        res.status(500).json(err);
+    };
+};
+
+// Remove a reaction
+const deleteReaction = async (req, res) => {
+    try {
+        const reaction = await Thought.findOneAndUpdate(
+            { _id: req.params.thoughtid },
+            { $pull: {reactions: req.body } },
+            )
+            res.json({ message: "Reaction deleted! " + reaction });
+    } catch (err) {
+        res.status(500).json(err);
+    };
 }
 
 // Routes
@@ -73,3 +101,7 @@ router.route('/thoughts/:thoughtId')
     .get(getOneThought)
     .put(updateThought)
     .delete(deleteThought)
+
+router.route('/api/thoughts/:thoughtId/reactions')
+    .post(createReaction)
+    .delete(deleteReaction)
