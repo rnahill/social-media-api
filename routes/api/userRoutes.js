@@ -57,7 +57,31 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const addFriend = async (req, res) => {
+    try {
+        await User.findOneAndUpdate(
+            { _id: req.params.userId},
+            { $push: { friends: req.params.friendId } },
+            { new: true }
+        )
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
+const removeFriend = async (req, res) => {
+    try {
+        await User.findOneAndUpdate(
+            { _id: req.params.userId},
+            { $pull: { friends: req.params.friendId } }
+        )
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
+
 // Routes
+
 router.route('/users')
     .get(getUsers)
     .post(createUser)
@@ -66,3 +90,7 @@ router.route('/:userId')
     .get(getOneUser)
     .put(updateUser)
     .delete(deleteUser)
+
+router.route('/api/users/:userId/friends/:friendId')
+    .post(addFriend)
+    .delete(removeFriend)
