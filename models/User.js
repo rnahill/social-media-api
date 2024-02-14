@@ -14,20 +14,37 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            //must match a valid email address (Mongoose matching validation)
+            match: [/.+@.+\..+/, "Must match an email address!"]
         },
 
         thoughts: [ 
-            // array of _id values referencing the Thought model
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Thought",
+            },
         ],
 
         friends: [
-            //array of _id values referencing the User model (self-reference)
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
 
-        ]
+        ],
         
+    },
+    {
+        toJSON: {
+            vituals: true,
+    },
+        id: false,
     }
 );
+
+userSchema.virtual("friendCount").get(function () {
+    return this.friends.length;
+    }
+)
 
 const User = mongoose.model('User', userSchema);
 
