@@ -99,3 +99,5 @@ router.route('/:userId')
 router.route('/api/users/:userId/friends/:friendId')
     .post(addFriend)
     .delete(removeFriend)
+
+module.exports = router;

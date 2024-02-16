@@ -105,3 +105,5 @@ router.route('/thoughts/:thoughtId')
 router.route('/api/thoughts/:thoughtId/reactions')
     .post(createReaction)
     .delete(deleteReaction)
+
+module.exports = router;
