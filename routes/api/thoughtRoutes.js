@@ -97,12 +97,12 @@ router.route('/')
     .get(getAllThoughts)
     .post(createThought)
 
-router.route('/thoughts/:thoughtId')
+router.route('/:thoughtId')
     .get(getOneThought)
     .put(updateThought)
     .delete(deleteThought)
 
-router.route('/thoughts/:thoughtId/reactions')
+router.route('/:thoughtId/reactions')
     .post(createReaction)
     .delete(deleteReaction)
 
