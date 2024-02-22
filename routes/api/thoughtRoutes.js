@@ -93,7 +93,7 @@ const deleteReaction = async (req, res) => {
 }
 
 // Routes
-router.route('/thoughts')
+router.route('/')
     .get(getAllThoughts)
     .post(createThought)
 
@@ -102,7 +102,7 @@ router.route('/thoughts/:thoughtId')
     .put(updateThought)
     .delete(deleteThought)
 
-router.route('/api/thoughts/:thoughtId/reactions')
+router.route('/thoughts/:thoughtId/reactions')
     .post(createReaction)
     .delete(deleteReaction)
 

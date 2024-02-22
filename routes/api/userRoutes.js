@@ -1,14 +1,15 @@
 const router = require('express').Router();
-const { User } = require('../../models/User')
+const { User } = require('../../models');
 
 
 // Get all users
 const getUsers = async (req, res) => {
     try{
-        const users = await User.find().populate('users');
+        const users = await User.find().populate('thoughts');
         res.json(users);
 
     } catch (err) {
+        console.log(err)
         res.status(500).json(err);
     };
 };
@@ -25,10 +26,12 @@ const getOneUser = async (req, res) => {
 
 // Create new user
 const createUser = async (req, res) => {
+    console.log("hi");
     try {
         const user = await User.create(req.body);
         res.json({ message: "User created! " + user });
     } catch (err) {
+        console.log(err)
         res.status(500).json(err);
     }
 }
@@ -87,7 +90,7 @@ const removeFriend = async (req, res) => {
 
 // Routes
 
-router.route('/users')
+router.route('/')
     .get(getUsers)
     .post(createUser)
 
@@ -96,7 +99,7 @@ router.route('/:userId')
     .put(updateUser)
     .delete(deleteUser)
 
-router.route('/api/users/:userId/friends/:friendId')
+router.route('/users/:userId/friends/:friendId')
     .post(addFriend)
     .delete(removeFriend)
 
