@@ -5,8 +5,7 @@ const { Thought, User } = require('../../models');
 // Get all thoughts
 const getAllThoughts = async (req, res) => {
     try{
-       const thoughts = await Thought.find().populate('thoughts');
-       res.json(thoughts);
+       const thoughts = await Thought.find()
     } catch (err) {
         res.status(500).json(err);
     };
@@ -15,7 +14,7 @@ const getAllThoughts = async (req, res) => {
 // Get one thought
 const getOneThought = async (req, res) => {
     try{
-        const thought = await Thought.findOne( { _id: req.params.thoughtId }).populate('thoughts');
+        const thought = await Thought.findOne( { _id: req.params.thoughtId });
         res.json (thought);
     } catch (err) {
         res.status(500).json(err);
@@ -23,20 +22,19 @@ const getOneThought = async (req, res) => {
 };
 
 // Create a thought
-// don't forget to push the created thought's _id to the associated user's thoughts array field
 const createThought = async (req, res) => {
     try {
-        const thought = await Thought.create(req.body)
-        .then((dbThoughtData) => {
-            return User.findOneAndUpdate(
-                { _id: req.body.userId },
-                { $push: { thoughts: dbThoughtData._id } },
-                { new: true }
-            );
-        });
-        res.json({ message: "Thought created! " + thought });
+        const thought = await Thought.create(req.body);
+        const user = await User.findOneAndUpdate(
+            { _id: req.body.userId },
+            { $push: { thoughts: thought._id } },
+            { new: true }
+        );
+        // Send success response
+        res.json({ message: "Thought created!", thought });
     } catch (err) {
         res.status(500).json(err);
+        console.log(err)
     }
 };
 
